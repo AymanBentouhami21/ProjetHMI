@@ -1,0 +1,48 @@
+/*
+
+
+    Signin elements
+
+
+*/
+
+#signinBackgroundPane{
+    -fx-background-image : url("../Images/SigninBackground.jpg");
+    -f-background-size: cover;
+}
+#signinPane{
+    -fx-background-color: white;
+    -fx-background-radius: 50px;
+    -fx-border-radius: 25px;
+    -fx-effect: dropshadow( gaussian , black , 25, 0.0 , 0 , 0 );
+}
+
+#signinLabel{
+    -fx-text-fill: rgb(55, 55, 228);
+    -fx-font-size: 25px; 
+    -fx-font-family: "Monaco";
+}
+
+#addressTextField{
+    -fx-background-radius: 50px;
+    -fx-border-radius: 25px;
+}
+#firstnameTextField{
+    -fx-background-radius: 50px;
+    -fx-border-radius: 25px;
+}
+#lastnameTextField{
+    -fx-background-radius: 50px;
+    -fx-border-radius: 25px;
+}
+#genderLabel{
+    -fx-font-size: 20px; 
+}
+#signinButton{
+    -fx-background-color: rgb(107, 107, 235);
+    -fx-background-radius: 50px;
+    -fx-border-radius: 25px;
+    -fx-text-fill: white;
+    -fx-font-size: 18px; 
+    -fx-font-family: "Verdana";
+}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="1600.0" style="-fx-background-image: cover;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HomeController">
+   <children>
+      <ScrollPane fx:id="scroll" hbarPolicy="NEVER" layoutX="488.0" layoutY="70.0" prefHeight="787.0" prefWidth="549.0" stylesheets="@../Stylesheets/HomeStyleSheet.css" vbarPolicy="NEVER">
+         <content>
+            <VBox fx:id="feedVBox" prefHeight="400.0" prefWidth="547.0" />
+         </content>
+      </ScrollPane>
+      <Button fx:id="createpostButton" layoutX="110.0" layoutY="378.0" mnemonicParsing="false" onAction="#createPost" prefHeight="49.0" prefWidth="246.0" text="Create a post" />
+      <VBox fx:id="createpostVBox" layoutX="419.0" layoutY="188.0" prefHeight="448.0" prefWidth="690.0" style="-fx-background-color: white;" visible="false">
+         <children>
+            <HBox prefHeight="76.0" prefWidth="690.0">
+               <children>
+                  <ImageView fx:id="pcImage" fitHeight="73.0" fitWidth="77.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="usernameLabel" prefHeight="17.0" prefWidth="551.0" text="ddddddddddddddd" underline="true" />
+                  <Button fx:id="returnButton" mnemonicParsing="false" onAction="#hideVBox" text="Button" />
+               </children>
+            </HBox>
+            <HBox prefHeight="34.0" prefWidth="690.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="606.0" textAlignment="CENTER">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Label>
+                  <Button fx:id="choosefileButton" mnemonicParsing="false" text="Choose File" />
+               </children>
+            </HBox>
+            <TextField fx:id="titleTextField" prefHeight="38.0" prefWidth="690.0" promptText="Tilte..." />
+            <TextArea fx:id="textTextArea" prefHeight="275.0" prefWidth="690.0" promptText="Text..." />
+            <HBox prefHeight="66.0" prefWidth="690.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="607.0" />
+                  <Button fx:id="submitButton" mnemonicParsing="false" onAction="#updatePostTable" prefHeight="25.0" prefWidth="79.0" text="Submit" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Button fx:id="profilebutton" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="82.0" layoutY="126.0" mnemonicParsing="false" onAction="#switchToEditProfile" prefHeight="231.0" prefWidth="239.0" text="Button">
+         <graphic>
+            <ImageView fx:id="bigprofile" fitHeight="223.0" fitWidth="256.0" pickOnBounds="true" preserveRatio="true" style="-fx-image-background: cover;" />
+         </graphic>
+      </Button>
+   </children>
+</AnchorPane>
