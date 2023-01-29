@@ -1,5 +1,5 @@
 package Controller;
-
+import Classes.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -13,33 +13,44 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.ResourceBundle;
+import java.util.logging.Handler;
 
 import Classes.Post;
 import Classes.Session;
 import javafx.beans.Observable;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.*;
 public class HomeController implements Initializable{
     
+    @FXML 
+    Circle circle = new Circle();
+    
     @FXML
-    VBox feedVBox = new VBox();
+    VBox feedVBox = new VBox(50);
     
     @FXML
     Button createpostButton = new Button();
@@ -57,7 +68,7 @@ public class HomeController implements Initializable{
     ImageView pcImage;
 
     @FXML
-    ImageView bigprofile;
+    ImageView bigprofile = new ImageView();
 
     @FXML
     TextField titleTextField = new TextField();
@@ -68,24 +79,33 @@ public class HomeController implements Initializable{
     @FXML
     Button submitButton;
 
-    ArrayList<Integer> post_order = new ArrayList<Integer>();
-    static ArrayList<Post> postlist = new ArrayList<Post>();
+    @FXML 
+    Button profilebutton;
 
-    public static Session session;
+    @FXML
+    Button showMyPostsButton = new Button();
+
+    @FXML 
+    Button disconnectButton = new Button();
+    
+    ArrayList<Integer> post_order = new ArrayList<Integer>();
+    ArrayList<Post> postlist = new ArrayList<Post>();
+
+    public static Session session ;
     public static String session_type ;
     Connection con;
+
+    EventHandler<MouseEvent> event;
+    
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-       
+    public void initialize(URL location, ResourceBundle resources) {     
         try {
-            
+            createEventHandler();
             chooseValidIndexes();
             createPostList();
             
-            
             feedVBox.getChildren().addAll(postlist);
-
-            //menuHBox.setId("menuHBox");
+           
             feedVBox.setId("feedVBox");
             if (session_type == "signin") {
                 session = SigninController.session;
@@ -96,8 +116,9 @@ public class HomeController implements Initializable{
                 System.out.println("login session");
                 System.out.println(session.username);
             }
+            
             setbigprofile();
-
+            getLikedPosts();
             
             
         } catch (ClassNotFoundException | SQLException e) {
@@ -180,8 +201,7 @@ public class HomeController implements Initializable{
     void createPostList() throws ClassNotFoundException, SQLException{
         
         for (int i = 0; i < post_order.size(); i++) {
-            postlist.add(new Post(post_order.get(i)));
-            
+            postlist.add(new Post(post_order.get(i)));  
         }
         
         
@@ -202,9 +222,17 @@ public class HomeController implements Initializable{
     }
 
     void resizeBigImage(){
-        bigprofile.setFitHeight(100);
-        bigprofile.setFitWidth(246);
-        bigprofile.setPreserveRatio(true);
+        
+        Image img = bigprofile.getImage();
+        ImagePattern imgp = new ImagePattern(img);
+        if (!imgp.getImage().equals(imgp)) {
+            System.out.println("the image isn't null");
+        }
+        
+        circle.setFill(imgp);
+        profilebutton.setShape(circle);
+        circle.setEffect(new DropShadow(10d,0d,0d,Color.RED));
+        circle.setStroke(Color.RED);
     }
     
    void setbigprofile() throws ClassNotFoundException, SQLException{
@@ -218,13 +246,15 @@ public class HomeController implements Initializable{
         Blob blob = rs.getBlob("profile_pic");
         InputStream inputStream = blob.getBinaryStream();
         Image img = new Image(inputStream);
-        bigprofile.setImage(img);;
+        circle.setFill(new ImagePattern(img));
+        bigprofile.setImage(img);
         break;
     }
+    
    } 
 
    void fetchUserRow() throws ClassNotFoundException, SQLException{
-    Class.forName("com.mysql.cj.jdbc.Driver");  
+        Class.forName("com.mysql.cj.jdbc.Driver");  
         Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/studcrud","root","");
         PreparedStatement stmt = con.prepareStatement("SELECT * FROM studcrud.user where username = ?");
         stmt.setString(1, session.username);
@@ -264,6 +294,39 @@ public class HomeController implements Initializable{
         createpostVBox.setVisible(false);
    }
 
+  
+
+   void getLikedPosts() throws ClassNotFoundException, SQLException{
+    Class.forName("com.mysql.cj.jdbc.Driver");  
+    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/studcrud","root","");
+    PreparedStatement stmt = con.prepareStatement("SELECT * FROM studcrud.likes where liked_by = ?");
+    stmt.setInt(1, session.id);
+    ResultSet rs = stmt.executeQuery();
+    System.out.println("posts liked");
+    ArrayList<Integer> liked_posts = new ArrayList<Integer>();
+    while (rs.next()) {
+        liked_posts.add(rs.getInt("post_liked"));
+    }
+    for (Integer integer : liked_posts) {
+        System.out.println("post : " + integer);
+    }
+    tagLikedPosts(liked_posts);
+
+   }
+
+   void tagLikedPosts(ArrayList<Integer> liked_posts){
+        for (int i = 0; i < liked_posts.size(); i++) {
+            for (int j = 0; j < postlist.size(); j++) {
+                if (liked_posts.get(i) == (postlist.get(j).post_id)) {
+                    postlist.get(j).likeButton.setGraphic(new ImageView(new Image("C:/Users/Bentouhami/Documents/3rd year/Chraibi/Projet fin de Semestre/ProjetFS+CSS/src/Icons/liked.png")));
+                    postlist.get(j).likeButton.state = "liked";
+                    System.out.println("liked post id:" + postlist.get(j).post_id );
+                }
+            }
+        }
+   }
+
+   /*
    @FXML
    void switchToEditProfile(ActionEvent event) throws IOException{
         Stage stage;
@@ -276,5 +339,44 @@ public class HomeController implements Initializable{
         scene.getStylesheets().add(getClass().getResource("../Stylesheets/EditProfileStylesheet.css").toExternalForm());
         stage.setScene(scene);
         stage.show(); 
+   } */
+   @FXML
+   void switchToLogin(ActionEvent event) throws IOException{
+        Parent root = FXMLLoader.load(getClass().getResource("../Views/LoginView.fxml"));
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("../Stylesheets/LoginStylesheet.css").toExternalForm());
+        stage.setScene(scene);
+        stage.show(); 
    }
+   
+   
+   void createEventHandler(){
+    event = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            // TODO Auto-generated method stub
+            if(event.getSource() == circle){
+                Stage stage;
+                Scene scene;
+                Parent root;   
+
+                try {
+                    root = FXMLLoader.load(getClass().getResource("../Views/EditProfile.fxml"));
+                    stage = (Stage) (((Node) event.getSource()).getScene().getWindow());
+                    scene  = new Scene(root);
+                    scene.getStylesheets().add(getClass().getResource("../Stylesheets/EditProfileStylesheet.css").toExternalForm());
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+    };
+    circle.setOnMouseClicked(event);
+   }
+
+    
 }

@@ -22,7 +22,7 @@ public class App extends Application {
         scene.getStylesheets().add(getClass().getResource("Stylesheets/LoginStylesheet.css").toExternalForm());
         
         primaryStage.setScene(scene);
-        primaryStage.setMaximized(true);
+        
         primaryStage.show();
 
         /*

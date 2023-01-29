@@ -6,26 +6,31 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="1600.0" style="-fx-background-image: cover;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HomeController">
+<AnchorPane fx:id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="1053.0" style="-fx-background-image: cover;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.HomeController">
    <children>
-      <ScrollPane fx:id="scroll" hbarPolicy="NEVER" layoutX="488.0" layoutY="70.0" prefHeight="787.0" prefWidth="549.0" stylesheets="@../Stylesheets/HomeStyleSheet.css" vbarPolicy="NEVER">
+      <ScrollPane fx:id="scroll" hbarPolicy="NEVER" layoutX="390.0" layoutY="148.0" prefHeight="694.0" prefWidth="549.0" stylesheets="@../Stylesheets/HomeStyleSheet.css" vbarPolicy="NEVER">
          <content>
-            <VBox fx:id="feedVBox" prefHeight="400.0" prefWidth="547.0" />
+            <VBox fx:id="feedVBox" prefHeight="49.0" prefWidth="547.0">
+               <padding>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </padding></VBox>
          </content>
       </ScrollPane>
-      <Button fx:id="createpostButton" layoutX="110.0" layoutY="378.0" mnemonicParsing="false" onAction="#createPost" prefHeight="49.0" prefWidth="246.0" text="Create a post" />
-      <VBox fx:id="createpostVBox" layoutX="419.0" layoutY="188.0" prefHeight="448.0" prefWidth="690.0" style="-fx-background-color: white;" visible="false">
+      <VBox fx:id="createpostVBox" layoutX="353.0" layoutY="188.0" prefHeight="448.0" prefWidth="684.0" style="-fx-background-color: white;" visible="false">
          <children>
             <HBox prefHeight="76.0" prefWidth="690.0">
                <children>
                   <ImageView fx:id="pcImage" fitHeight="73.0" fitWidth="77.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="usernameLabel" prefHeight="17.0" prefWidth="551.0" text="ddddddddddddddd" underline="true" />
-                  <Button fx:id="returnButton" mnemonicParsing="false" onAction="#hideVBox" text="Button" />
+                  <Label fx:id="usernameLabel" prefHeight="17.0" prefWidth="575.0" text="ddddddddddddddd" underline="true" />
+                  <Button fx:id="returnButton" mnemonicParsing="false" onAction="#hideVBox" prefHeight="25.0" prefWidth="20.0" text="Button" />
                </children>
             </HBox>
             <HBox prefHeight="34.0" prefWidth="690.0">
@@ -35,7 +40,7 @@
                         <Insets />
                      </opaqueInsets>
                   </Label>
-                  <Button fx:id="choosefileButton" mnemonicParsing="false" text="Choose File" />
+                  <Button fx:id="choosefileButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="148.0" text="Choose File" />
                </children>
             </HBox>
             <TextField fx:id="titleTextField" prefHeight="38.0" prefWidth="690.0" promptText="Tilte..." />
@@ -48,10 +53,18 @@
             </HBox>
          </children>
       </VBox>
-      <Button fx:id="profilebutton" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="82.0" layoutY="126.0" mnemonicParsing="false" onAction="#switchToEditProfile" prefHeight="231.0" prefWidth="239.0" text="Button">
-         <graphic>
-            <ImageView fx:id="bigprofile" fitHeight="223.0" fitWidth="256.0" pickOnBounds="true" preserveRatio="true" style="-fx-image-background: cover;" />
-         </graphic>
-      </Button>
+      <Button fx:id="createpostButton" layoutX="390.0" layoutY="104.0" mnemonicParsing="false" onAction="#createPost" prefHeight="44.0" prefWidth="549.0" text="CreatePost" underline="true">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
+      <Button fx:id="showMyPostsButton" layoutX="110.0" layoutY="484.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="261.0" text="showMyPosts" />
+      <Button fx:id="showMyPostsButton" layoutX="501.0" layoutY="24.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="77.0" text="showMyPosts" />
+      <ImageView fitHeight="35.0" fitWidth="324.0" layoutX="703.0" layoutY="109.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Icons/writeIcon.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="disconnectButton" layoutX="594.0" layoutY="24.0" mnemonicParsing="false" onAction="#switchToLogin" prefHeight="65.0" prefWidth="70.0" text="Disconnect" />
+      <Circle fx:id="circle" fill="DODGERBLUE" layoutX="183.0" layoutY="239.0" radius="112.0" stroke="BLACK" strokeType="INSIDE" />
    </children>
 </AnchorPane>

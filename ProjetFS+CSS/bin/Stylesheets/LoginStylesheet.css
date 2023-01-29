@@ -29,12 +29,21 @@
     -fx-border-radius: 25px;
 }
 #loginButton{
-    -fx-background-color: rgb(107, 107, 235);
+    -fx-background-color: rgba(8, 8, 238, 0.555);
     -fx-background-radius: 50px;
     -fx-border-radius: 25px;
     -fx-text-fill: white;
     -fx-font-size: 18px; 
     -fx-font-family: "Verdana";
+}
+
+#loginButton:hover{
+    -fx-background-color: rgb(107, 107, 235);
+    
+}
+
+.button:hover{
+    -fx-cursor: hand;
 }
 
 

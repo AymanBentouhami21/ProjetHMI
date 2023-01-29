@@ -37,12 +37,14 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane fx:id="loginAnchorBack" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LoginController">
+<AnchorPane fx:id="loginAnchorBack" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="1053.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LoginController">
    <children>
-      <Pane fx:id="loginPane" layoutX="603.0" layoutY="180.0" prefHeight="513.0" prefWidth="461.0">
+      <Pane fx:id="loginPane" layoutX="296.0" layoutY="164.0" prefHeight="513.0" prefWidth="461.0">
          <children>
             <Label fx:id="logoLabel" layoutX="115.0" layoutY="14.0" prefHeight="150.0" prefWidth="225.0" />
             <TextField fx:id="usernameTextField" layoutX="96.0" layoutY="180.0" prefHeight="45.0" prefWidth="269.0" promptText="username" />
@@ -50,6 +52,25 @@
             <Button fx:id="loginButton" layoutX="96.0" layoutY="354.0" mnemonicParsing="false" onAction="#switchToHome" prefHeight="37.0" prefWidth="269.0" text="LOGIN" />
             <Hyperlink fx:id="Singin" layoutX="365.0" layoutY="476.0" onAction="#switchToSignin" text="Click here." />
             <Label layoutX="241.0" layoutY="479.0" text="Don;t have an account?" />
+            <Label fx:id="incorrectUsername" layoutX="115.0" layoutY="152.0" text="   username incorrect" textFill="#fa0000ba" visible="false">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Icons/incorrecte.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
+            <Label fx:id="incorrectPassword" layoutX="107.0" layoutY="233.0" text="password incorrect" textFill="#fa0000ba" visible="false">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Icons/incorrecte.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
          </children></Pane>
+      <Label text="Label" />
    </children>
 </AnchorPane>

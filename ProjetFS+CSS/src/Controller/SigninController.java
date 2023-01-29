@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -43,11 +44,20 @@ public class SigninController {
 
     @FXML
     Button signinButton;
+    
+    @FXML 
+    Label incorrectUsername = new Label();
+
+    @FXML
+    Label necessaryBirthdate = new Label();
 
     public static Session session;
     
     @FXML
     void Register(ActionEvent event) throws ClassNotFoundException, SQLException, IOException{
+        incorrectUsername.setVisible(false);
+        necessaryBirthdate.setVisible(true);
+        
         Class.forName("com.mysql.cj.jdbc.Driver");  
         Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/studcrud","root","");
         PreparedStatement stmt = con.prepareStatement("INSERT INTO studcrud.user(username, first_name, last_name, password, gender, date_of_birth) VALUES(?,?,?,?,?,?)");
@@ -59,22 +69,27 @@ public class SigninController {
         stmt.setString(5, getRadio(event));
         stmt.setString(6, dateFormatter());
         
-        int rs = stmt.executeUpdate();
-        if(rs == 1){
-            stmt = con.prepareStatement("SELECT * FROM studcrud.user WHERE username = ?");
-            stmt.setString(1, usernameTextField.getText());
-            ResultSet result = stmt.executeQuery();
-            session = new Session(usernameTextField.getText(), PasswordField.getText());
-            while (result.next()) {
-                session.id = result.getInt("id");
+        try {
+            int rs = stmt.executeUpdate();
+            if(rs == 1){
+                stmt = con.prepareStatement("SELECT * FROM studcrud.user WHERE username = ?");
+                stmt.setString(1, usernameTextField.getText());
+                ResultSet result = stmt.executeQuery();
+                session = new Session(usernameTextField.getText(), PasswordField.getText());
+                while (result.next()) {
+                    session.id = result.getInt("id");
+                }
+                HomeController.session_type = "signin";
+                
+                switchToHome(event);
+                
             }
-            HomeController.session_type = "signin";
-            System.out.println("hioiiiioiioiio");
-            switchToHome(event);
-            
-        }
-        System.out.println(rs);
-        
+        } catch (SQLException e) {
+            // TODO: handle exception
+            if(e instanceof SQLIntegrityConstraintViolationException){
+                incorrectUsername.setVisible(true);
+            }
+        } 
     }
 
     String getRadio(ActionEvent event){
@@ -87,9 +102,17 @@ public class SigninController {
     }
 
     public String dateFormatter(){
-        LocalDate birthdate = birthDatePicker.getValue();
-        String formattedBD = birthdate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        return formattedBD;
+        String formattedBD = "";
+        try {
+            LocalDate birthdate = birthDatePicker.getValue();
+            formattedBD = birthdate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            return formattedBD;
+        } catch (Exception e) {
+            // TODO: handle exception
+            necessaryBirthdate.setVisible(true);
+            return formattedBD;
+        }
+        
     }
 
     void switchToHome(ActionEvent event) throws IOException{
